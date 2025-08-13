@@ -1,3 +1,85 @@
+// import React, { useEffect, useState } from "react";
+// import "bootstrap/dist/css/bootstrap.min.css";
+// import "bootstrap/dist/js/bootstrap.bundle.min.js";
+// import { useNavigate } from "react-router-dom";
+
+// function shuffleArray(arr) {
+//   return [...arr].sort(() => Math.random() - 0.5);
+// }
+
+// export default function AssessmentPage() {
+//   const API_URL = "http://localhost:3100/quantQuestions";
+//   const navigate = useNavigate();
+
+//   const [quiz, setQuiz] = useState([]);
+//   const [currentIndex, setCurrentIndex] = useState(0);
+//   const [answers, setAnswers] = useState({});
+//   const [submitted, setSubmitted] = useState({});
+//   const [timeLeft, setTimeLeft] = useState(0);
+
+//   const [trialQuestions, setTrialQuestions] = useState([]);
+//   const [realTestQuestions, setRealTestQuestions] = useState([]);
+//   const [isTrialMode, setIsTrialMode] = useState(true);
+
+//   const [showTrialFinishModal, setShowTrialFinishModal] = useState(false);
+//   const [showScoreModal, setShowScoreModal] = useState(false);
+
+//   const [violationCount, setViolationCount] = useState(0);
+//   const [micViolation, setMicViolation] = useState(0);
+//   const [finalScore, setFinalScore] = useState(0);
+
+//   // ✅ Fetch questions initially (trial + real test sets)
+//   useEffect(() => {
+//     fetch(API_URL)
+//       .then((res) => res.json())
+//       .then((data) => {
+//         console.log("✅ Raw fetched data:", data);
+
+//         const allQuestions = Array.isArray(data)
+//           ? data
+//           : data.quantQuestions || [];
+
+//         // ✅ Separate by difficulty
+//         const easyQ = allQuestions.filter((q) => q.difficulty === "easy");
+//         const mediumQ = allQuestions.filter((q) => q.difficulty === "medium");
+//         const hardQ = allQuestions.filter((q) => q.difficulty === "hard");
+
+//         const shuffle = (arr) => [...arr].sort(() => Math.random() - 0.5);
+
+//         // ✅ Pick 2 easy questions for trial
+//         const trialSet = shuffle(easyQ).slice(0, 2);
+
+//         // ✅ Pick 10 questions for real test: 3 easy + 4 medium + 3 hard
+//         const realTestSet = [
+//           ...shuffle(easyQ).slice(0, 3),
+//           ...shuffle(mediumQ).slice(0, 4),
+//           ...shuffle(hardQ).slice(0, 3),
+//         ];
+
+//         // ✅ FIXED: Properly map correct answer value for scoring
+//         const formatQuestions = (qs) =>
+//           qs.map((q) => {
+//             const shuffledOptions = Object.values(q.options).sort(
+//               () => Math.random() - 0.5
+//             );
+//             // ✅ Convert "C" → actual correct text e.g. "60"
+//             const correctAnswerValue = q.options[q.answer];
+//             return {
+//               ...q,
+//               options: shuffledOptions,
+//               answer: correctAnswerValue, // overwrite key with correct text
+//             };
+//           });
+
+//         // ✅ Save trial & real test separately
+//         setTrialQuestions(formatQuestions(trialSet));
+//         setRealTestQuestions(formatQuestions(realTestSet));
+
+//         // ✅ Start with trial
+//         setQuiz(formatQuestions(trialSet));
+//       })
+//       .catch((err) => console.error("❌ Error loading questions:", err));
+//   }, []);
 import React, { useEffect, useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
@@ -7,8 +89,116 @@ function shuffleArray(arr) {
   return [...arr].sort(() => Math.random() - 0.5);
 }
 
+// ✅ Embedded questions (instead of fetching from API)
+const quantQuestions = [
+  {
+    id: 1,
+    question: "What is 5 + 3?",
+    options: { A: "6", B: "7", C: "8", D: "9" },
+    answer: "C",
+    difficulty: "easy",
+  },
+  {
+    id: 2,
+    question: "What is 10 × 2?",
+    options: { A: "20", B: "22", C: "18", D: "24" },
+    answer: "A",
+    difficulty: "easy",
+  },
+  {
+    id: 3,
+    question: "What is the square root of 81?",
+    options: { A: "7", B: "8", C: "9", D: "10" },
+    answer: "C",
+    difficulty: "medium",
+  },
+  {
+    id: 4,
+    question: "What is 15% of 200?",
+    options: { A: "20", B: "25", C: "30", D: "35" },
+    answer: "C",
+    difficulty: "medium",
+  },
+  {
+    id: 5,
+    question: "If 2x = 10, what is x?",
+    options: { A: "4", B: "5", C: "6", D: "8" },
+    answer: "B",
+    difficulty: "easy",
+  },
+  {
+    id: 6,
+    question: "What is 12 × 12?",
+    options: { A: "124", B: "140", C: "144", D: "150" },
+    answer: "C",
+    difficulty: "medium",
+  },
+  {
+    id: 7,
+    question: "Solve: 100 ÷ 4",
+    options: { A: "20", B: "25", C: "30", D: "35" },
+    answer: "B",
+    difficulty: "easy",
+  },
+  {
+    id: 8,
+    question: "What is 7³?",
+    options: { A: "243", B: "343", C: "403", D: "512" },
+    answer: "B",
+    difficulty: "hard",
+  },
+  {
+    id: 9,
+    question: "If y = 3x and x = 4, what is y?",
+    options: { A: "10", B: "12", C: "15", D: "20" },
+    answer: "B",
+    difficulty: "medium",
+  },
+  {
+    id: 10,
+    question: "What is 50% of 300?",
+    options: { A: "100", B: "120", C: "150", D: "180" },
+    answer: "C",
+    difficulty: "medium",
+  },
+  {
+    id: 11,
+    question: "What is the derivative of x²?",
+    options: { A: "2x", B: "x", C: "x²", D: "1" },
+    answer: "A",
+    difficulty: "hard",
+  },
+  {
+    id: 12,
+    question: "What is 9 × 8?",
+    options: { A: "72", B: "74", C: "76", D: "78" },
+    answer: "A",
+    difficulty: "easy",
+  },
+  {
+    id: 13,
+    question: "Simplify: 2(3 + 4)",
+    options: { A: "14", B: "12", C: "10", D: "8" },
+    answer: "B",
+    difficulty: "easy",
+  },
+  {
+    id: 14,
+    question: "What is 1000 ÷ 25?",
+    options: { A: "20", B: "30", C: "40", D: "50" },
+    answer: "C",
+    difficulty: "hard",
+  },
+  {
+    id: 15,
+    question: "What is (2 + 3) × (4 + 1)?",
+    options: { A: "20", B: "25", C: "15", D: "10" },
+    answer: "B",
+    difficulty: "medium",
+  },
+];
+
 export default function AssessmentPage() {
-  const API_URL = "http://localhost:3100/quantQuestions";
   const navigate = useNavigate();
 
   const [quiz, setQuiz] = useState([]);
@@ -22,64 +212,43 @@ export default function AssessmentPage() {
   const [isTrialMode, setIsTrialMode] = useState(true);
 
   const [showTrialFinishModal, setShowTrialFinishModal] = useState(false);
-  const [showScoreModal, setShowScoreModal] = useState(false);
-
   const [violationCount, setViolationCount] = useState(0);
   const [micViolation, setMicViolation] = useState(0);
-  const [finalScore, setFinalScore] = useState(0);
 
-  // ✅ Fetch questions initially (trial + real test sets)
+  // ✅ Load data from embedded array instead of API
   useEffect(() => {
-    fetch(API_URL)
-      .then((res) => res.json())
-      .then((data) => {
-        console.log("✅ Raw fetched data:", data);
+    const easyQ = quantQuestions.filter((q) => q.difficulty === "easy");
+    const mediumQ = quantQuestions.filter((q) => q.difficulty === "medium");
+    const hardQ = quantQuestions.filter((q) => q.difficulty === "hard");
 
-        const allQuestions = Array.isArray(data)
-          ? data
-          : data.quantQuestions || [];
+    const shuffle = (arr) => [...arr].sort(() => Math.random() - 0.5);
 
-        // ✅ Separate by difficulty
-        const easyQ = allQuestions.filter((q) => q.difficulty === "easy");
-        const mediumQ = allQuestions.filter((q) => q.difficulty === "medium");
-        const hardQ = allQuestions.filter((q) => q.difficulty === "hard");
+    const trialSet = shuffle(easyQ).slice(0, 2);
+    const realTestSet = [
+      ...shuffle(easyQ).slice(0, 3),
+      ...shuffle(mediumQ).slice(0, 4),
+      ...shuffle(hardQ).slice(0, 3),
+    ];
 
-        const shuffle = (arr) => [...arr].sort(() => Math.random() - 0.5);
+    const formatQuestions = (qs) =>
+      qs.map((q) => {
+        const shuffledOptions = Object.values(q.options).sort(
+          () => Math.random() - 0.5
+        );
+        const correctAnswerValue = q.options[q.answer];
+        return {
+          ...q,
+          options: shuffledOptions,
+          answer: correctAnswerValue,
+        };
+      });
 
-        // ✅ Pick 2 easy questions for trial
-        const trialSet = shuffle(easyQ).slice(0, 2);
-
-        // ✅ Pick 10 questions for real test: 3 easy + 4 medium + 3 hard
-        const realTestSet = [
-          ...shuffle(easyQ).slice(0, 3),
-          ...shuffle(mediumQ).slice(0, 4),
-          ...shuffle(hardQ).slice(0, 3),
-        ];
-
-        // ✅ FIXED: Properly map correct answer value for scoring
-        const formatQuestions = (qs) =>
-          qs.map((q) => {
-            const shuffledOptions = Object.values(q.options).sort(
-              () => Math.random() - 0.5
-            );
-            // ✅ Convert "C" → actual correct text e.g. "60"
-            const correctAnswerValue = q.options[q.answer];
-            return {
-              ...q,
-              options: shuffledOptions,
-              answer: correctAnswerValue, // overwrite key with correct text
-            };
-          });
-
-        // ✅ Save trial & real test separately
-        setTrialQuestions(formatQuestions(trialSet));
-        setRealTestQuestions(formatQuestions(realTestSet));
-
-        // ✅ Start with trial
-        setQuiz(formatQuestions(trialSet));
-      })
-      .catch((err) => console.error("❌ Error loading questions:", err));
+    setTrialQuestions(formatQuestions(trialSet));
+    setRealTestQuestions(formatQuestions(realTestSet));
+    setQuiz(formatQuestions(trialSet));
   }, []);
+
+
 
   // ✅ Fullscreen + security lock
   const enterFullscreen = () => {
