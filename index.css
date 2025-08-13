@@ -1,0 +1,180 @@
+.assessment-container {
+  display: flex;
+  height: 100vh;
+  font-family: Arial, sans-serif;
+}
+
+/* LEFT 60% */
+.left-section {
+  width: 60%;
+  padding: 20px;
+  background: #fff;
+}
+
+.question-text {
+  font-size: 20px;
+  margin-bottom: 20px;
+}
+
+.options-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.option-box {
+  background: #f5f5f5;
+  padding: 10px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.button-group {
+  margin-top: 20px;
+}
+
+.btn {
+  padding: 12px 20px;
+  background: #007bff;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.btn:hover {
+  background: #0056b3;
+}
+
+/* RIGHT 40% */
+.right-section {
+  width: 40%;
+  padding: 20px;
+  background: #f8f8f8;
+  border-left: 2px solid #ddd;
+}
+
+.timer-box {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.number-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 40px);
+  gap: 10px;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.num-box {
+  width: 40px;
+  height: 40px;
+  background: gray;
+  color: white;
+  text-align: center;
+  line-height: 40px;
+  border-radius: 6px;
+  font-weight: bold;
+}
+
+.num-box.answered {
+  background: green;
+}
+
+.webcam-container {
+  text-align: center;
+  margin-top: 20px;
+}
+.assessment-container {
+  display: flex;
+  height: 100vh;
+  font-family: Arial, sans-serif;
+}
+
+/* Left: Questions */
+.left-section {
+  flex: 0.6;
+  padding: 20px;
+  background: #f8f8f8;
+}
+
+.question-text {
+  font-size: 18px;
+  margin-bottom: 20px;
+}
+
+.options-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.option-box {
+  background: white;
+  padding: 10px;
+  border: 1px solid #ddd;
+  cursor: pointer;
+  border-radius: 6px;
+}
+
+.option-box input {
+  margin-right: 8px;
+}
+
+.button-group {
+  margin-top: 20px;
+}
+
+.btn {
+  padding: 10px 20px;
+  background: #007bff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* Right: Timer, grid, webcam */
+.right-section {
+  flex: 0.4;
+  background: #fff;
+  padding: 20px;
+  border-left: 2px solid #eee;
+}
+
+.timer-box {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.number-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 40px);
+  gap: 10px;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.num-box {
+  width: 40px;
+  height: 40px;
+  background: #eee;
+  text-align: center;
+  line-height: 40px;
+  border-radius: 6px;
+}
+
+.num-box.answered {
+  background: #4caf50;
+  color: white;
+  font-weight: bold;
+}
+
+.webcam-container {
+  text-align: center;
+  margin-top: 20px;
+}
